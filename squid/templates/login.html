@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/proxy.css' %}" />
+</head>
+
+<body>
+    <div class="login-page">
+        <div class="form">
+            <h1>Squid Admin</h1>
+            <form class="create-form" method="post" action="/login">
+                {% csrf_token %}
+                <input type="text" placeholder="username" name="username" />
+                <input type="text" placeholder="password" name="password" />
+                <button type="submit">Login</button>
+                <!-- <p class="message"><a href="#">Create proxy</a></p> -->
+            </form>
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="{% static 'js/login.js' %}"></script> -->
+</body>
+
+</html>

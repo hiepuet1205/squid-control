@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/proxy.css' %}" />
+</head>
+
+<body>
+    <div class="login-page">
+        <div class="form">
+            <h1>Proxy</h1>
+            {% if update %}
+            <form class="create-form" method="post" action="/proxy/update-bandwidth">
+                {% csrf_token %}
+                <input type="text" placeholder="id" name="id" value="{{ id }}" />
+                <input type="text" placeholder="bandwidth" name="bandwidth" />
+                <button type="submit">Update</button>
+                <p class="message"><a href="#">Create proxy</a></p>
+            </form>
+            {% else %}
+            <form class="create-form" method="post" action="/proxy/create-proxy">
+                {% csrf_token %}
+                <input type="text" placeholder="username" name="username" />
+                <input type="password" placeholder="password" name="password" />
+                <input type="text" placeholder="bandwidth" name="bandwidth" />
+                <button type="submit">Create</button>
+                <p class="message"><a href="#">Update proxy</a></p>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/proxy.js' %}"></script>
+</body>
+
+</html>
