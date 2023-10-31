@@ -89,7 +89,7 @@
                         <tr>
                             <td>{{proxy.username}}</td>
                             <td>{{proxy.password}}</td>
-                            <td>{{proxy.bandwidth}}</td>
+                            <td>{{proxy.bandwidth}} mbps</td>
                             <td>
                                 <a href="{% url 'updateProxy' proxy.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <a href="{% url 'deleteProxy' proxy.id %}" class="delete-proxy"><i

@@ -1,19 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import never_cache
 from squid.proxy import squid
 from squid.proxy.models import Proxy
 
 # Create your views here.
 
 @login_required(login_url='/login')
-@never_cache
 def index(request):
     proxies = Proxy.objects.all()
+    proxy_list = []
+    for proxy in proxies:
+        proxy_info = {
+            'id': proxy.id,
+            'username': proxy.username,
+            'password': proxy.password,
+            'bandwidth': proxy.bandwidth * 8 / 1000000
+        }
+        proxy_list.append(proxy_info)
     ctx = {
         'num_proxies': proxies.count(),
-        'proxies': proxies
+        'proxies': proxy_list
     }
     return render(request, 'index.html', ctx)
 
