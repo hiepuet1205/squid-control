@@ -1,4 +1,4 @@
-import os
+import os, time
 from passlib.apache import HtpasswdFile
 from .models import Proxy
 
@@ -42,10 +42,10 @@ auth_param basic program /lib/squid/basic_ncsa_auth /etc/squid/.htpasswd
 auth_param basic children 3
 auth_param basic realm MySquidProxy
 auth_param basic credentialsttl 1 hours
-
 """
 
 footer = """
+http_access deny all
 http_port 3128
 
 coredump_dir /var/spool/squid
@@ -64,6 +64,7 @@ main = ""
 
 def reconfigure():
     os.system("sudo squid -k reconfigure")
+    time.sleep(5)
 
 def addAuthentication(username, password):
     htpasswd = HtpasswdFile(ROUTE_HTPASSWD)
@@ -87,8 +88,8 @@ def limitBandwidth():
     squidconf = open(ROUTE_SQUID_CONFIG,"w")
     squidconf.write(header+main+footer)
     squidconf.close()
+    time.sleep(1)
     print("Done.")
-
 
 # acl user1 proxy_auth user1
 # http_access allow user1 

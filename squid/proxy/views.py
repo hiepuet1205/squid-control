@@ -33,7 +33,10 @@ def createProxy(request):
         password = request.POST['password']
         bandwidth = request.POST['bandwidth']
 
-        proxy = Proxy.objects.get(username=username)
+        try:
+            proxy = Proxy.objects.get(username=username)
+        except Proxy.DoesNotExist:
+            proxy = None
 
         if proxy is not None:
             return redirect('index')
@@ -58,9 +61,7 @@ def updateBandwidth(request):
             proxy.save()
 
             squid.limitBandwidth()
-            time.sleep(1)
             squid.reconfigure()
-            time.sleep(5)
         except:
             print("Error updating bandwidth")
         
