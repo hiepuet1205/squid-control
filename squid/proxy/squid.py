@@ -71,6 +71,11 @@ def addAuthentication(username, password):
     htpasswd.set_password(username, password)
     htpasswd.save()
 
+def deleteAuthentication(username):
+    htpasswd = HtpasswdFile(ROUTE_HTPASSWD)
+    htpasswd.delete(username)
+    htpasswd.save()
+
 def limitBandwidth(): 
     all_proxies = Proxy.objects.all()
 
@@ -90,15 +95,3 @@ def limitBandwidth():
     squidconf.close()
     time.sleep(1)
     print("Done.")
-
-# acl user1 proxy_auth user1
-# http_access allow user1 
-# acl user2 proxy_auth user2
-# http_access allow user2
-# delay_pools 2
-# delay_class 1 1 
-# delay_parameters 1 1000000/1000000
-# delay_access 1 allow user1 
-# delay_class 2 1
-# delay_parameters 2 2000000/2000000
-# delay_access 2 allow user2

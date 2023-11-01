@@ -22,7 +22,13 @@ def updateProxy(request, id):
 
 @login_required(login_url='/login')
 def deleteProxy(request, id):
-    Proxy.objects.get(pk=id).delete()
+    try:
+        proxy = Proxy.objects.get(pk=id)
+        squid.deleteAuthentication(proxy.username)
+        squid.limitBandwidth()
+        squid.reconfigure()
+    except:
+        print("Error delete proxy")
     return redirect('index')
 
 # Create your views here.
