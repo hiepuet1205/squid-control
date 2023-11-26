@@ -15,7 +15,7 @@ def index(request):
             'id': proxy.id,
             'username': proxy.username,
             'password': proxy.password,
-            'bandwidth': proxy.bandwidth * 8 / 1000000
+            'bandwidth': proxy.bandwidth
         }
         proxy_list.append(proxy_info)
     ctx = {

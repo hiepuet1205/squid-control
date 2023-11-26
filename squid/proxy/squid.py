@@ -42,6 +42,8 @@ auth_param basic program /lib/squid/basic_ncsa_auth /etc/squid/.htpasswd
 auth_param basic children 3
 auth_param basic realm MySquidProxy
 auth_param basic credentialsttl 1 hours
+acl auth_users proxy_auth REQUIRED
+http_access allow auth_users
 """
 
 footer = """
@@ -80,15 +82,16 @@ def limitBandwidth():
     all_proxies = Proxy.objects.all()
 
     acls = ""
-    http_access = ""
+    # http_access = ""
     delay = f"delay_pools {all_proxies.count()} \n"
 
     for index, proxy in enumerate(all_proxies):
         acls += f'acl {proxy.username} proxy_auth {proxy.username} \n'
-        http_access += f'http_access allow {proxy.username} \n'
-        delay += f"delay_class {index + 1} 1 \ndelay_parameters {index + 1} {proxy.bandwidth}/{proxy.bandwidth} \ndelay_access {index + 1} allow {proxy.username}\n"
+        # http_access += f'http_access allow {proxy.username} \n'
+        delay += f"delay_class {index + 1} 1 \ndelay_parameters {index + 1} {int(proxy.bandwidth / 8 * 1000000)}/{int(proxy.bandwidth / 8 * 1000000)} \ndelay_access {index + 1} allow {proxy.username}\n"
 
-    main = acls + '\n' + http_access + '\n' + delay + '\n'
+    # main = acls + '\n' + http_access + '\n' + delay + '\n'
+    main = acls + '\n' + delay + '\n'
 
     squidconf = open(ROUTE_SQUID_CONFIG,"w")
     squidconf.write(header+main+footer)

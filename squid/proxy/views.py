@@ -25,6 +25,7 @@ def deleteProxy(request, id):
     try:
         proxy = Proxy.objects.get(pk=id)
         squid.deleteAuthentication(proxy.username)
+        proxy.delete()
         squid.limitBandwidth()
         squid.reconfigure()
     except:
@@ -38,7 +39,7 @@ def createProxy(request):
         username = request.POST['username']
         password = request.POST['password']
         bandwidth = request.POST['bandwidth']
-
+        
         try:
             proxy = Proxy.objects.get(username=username)
         except Proxy.DoesNotExist:
